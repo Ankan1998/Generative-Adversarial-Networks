@@ -27,3 +27,6 @@ class Generator(nn.Module):
 
     def forward(self, noise):
         return self.gen(noise)
+
+if __name__ == "__main__":
+    pass

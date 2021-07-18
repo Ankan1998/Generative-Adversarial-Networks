@@ -24,3 +24,6 @@ class Discriminator(nn.Module):
 
     def forward(self, image):
         return self.disc(image)
+
+if __name__ == "__main__":
+    pass
