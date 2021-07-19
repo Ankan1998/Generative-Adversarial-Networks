@@ -1,15 +1,14 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
 import torch.nn.functional as F
 from tqdm import tqdm
 from gan_loss import *
 from visualize import visualize_tensor_images
 
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def train(
+
+def train_gan(
     gen,
     disc,
     gen_opt,
@@ -21,12 +20,12 @@ def train(
     n_epochs=50,
     n_batch=128,
     lr=0.0001,
-    device=DEVICE):
+    device='cpu'):
     
     cur_step = 0
     mean_gen_loss = 0
     mean_disc_loss = 0
-    gen_loss = False
+    
 
     for epoch in range(n_epochs):
 
@@ -41,7 +40,7 @@ def train(
                 real,
                 cur_batch_size,
                 z_dim,
-                device=DEVICE)
+                device)
             disc_loss_val.backward(retain_graph=True)
             disc_opt.step()
             gen_opt.zero_grad()
@@ -51,7 +50,7 @@ def train(
                 criterion,
                 cur_batch_size,
                 z_dim,
-                device=DEVICE)
+                device)
             gen_loss_val.backward()
             gen_opt.step()
             mean_gen_loss += gen_loss_val.item() / display_step
