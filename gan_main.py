@@ -10,21 +10,24 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 def training_gan(
     path = "dataset",
+    criterion = nn.BCEWithLogitsLoss(),
     n_epochs = 200,
     z_dim = 64,
     display_step = 500,
     batch_size = 128,
     lr = 0.00001,
+    viz = True,
     device=DEVICE):
 
     gen = Generator(z_dim).to(device)
     disc = Discriminator().to(device)
     optimizer_gen = optim.Adam(gen.parameters(), lr=lr)
     optimizer_disc = optim.Adam(disc.parameters(), lr=lr)
-    criterion = nn.BCEWithLogitsLoss()
+
     dataloader = data_loader(path,batch_size)
 
     train_gan(
+        'gan',
         gen,
         disc,
         optimizer_gen,
@@ -34,8 +37,9 @@ def training_gan(
         display_step,
         z_dim,
         n_epochs,
+        viz,
         device)
 
 
 if __name__ == '__main__':
-    training_gan()
+    training_gan(viz=False)

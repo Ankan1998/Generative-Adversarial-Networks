@@ -9,15 +9,17 @@ from visualize import visualize_tensor_images
 
 
 def train_gan(
+    GAN,
     gen,
     disc,
     gen_opt,
     disc_opt,
     dataloader,
-    criterion=nn.BCEWithLogitsLoss(),
-    display_step=50,
-    z_dim = 64,
-    n_epochs=50,
+    criterion,
+    display_step,
+    z_dim,
+    n_epochs,
+        viz,
     device='cpu'):
     
     cur_step = 0
@@ -29,7 +31,10 @@ def train_gan(
 
         for real, _ in tqdm(dataloader):
             cur_batch_size = len(real)
-            real = real.view(cur_batch_size, -1).to(device)
+            if GAN == "gan":
+                real = real.view(cur_batch_size, -1).to(device)
+            else:
+                real = real.to(device)
             disc_opt.zero_grad()
             disc_loss_val = disc_loss(
                 gen,
@@ -59,10 +64,11 @@ def train_gan(
                     "Epoch: {}/{}".format(epoch, n_epochs),
                     "Gen_loss: {:.4f}".format(mean_gen_loss),
                     "Disc_loss: {:.4f}".format(mean_disc_loss))
-                fake_noise = torch.randn(cur_batch_size, z_dim).to(device)
-                fake_images = gen(fake_noise)
-                visualize_tensor_images(fake_images)
-                visualize_tensor_images(real)
+                if viz == True:
+                    fake_noise = torch.randn(cur_batch_size, z_dim).to(device)
+                    fake_images = gen(fake_noise)
+                    visualize_tensor_images(fake_images)
+                    visualize_tensor_images(real)
                 mean_gen_loss = 0
                 mean_disc_loss = 0
             
