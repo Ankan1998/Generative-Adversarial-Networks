@@ -1,0 +1,45 @@
+import torch
+import torch.nn as nn
+from DCGAN.discriminator import Discriminator
+from DCGAN.generator import Generator
+from data_prep import data_loader
+import torch.optim as optim
+from gan_training import train_gan
+
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+def training_gan(
+    path = "dataset",
+    criterion = nn.BCEWithLogitsLoss(),
+    n_epochs = 200,
+    z_dim = 64,
+    display_step = 500,
+    batch_size = 128,
+    lr = 0.0002,
+    viz = True,
+    device=DEVICE):
+
+    gen = Generator(z_dim).to(device)
+    disc = Discriminator().to(device)
+    optimizer_gen = optim.Adam(gen.parameters(), lr=lr)
+    optimizer_disc = optim.Adam(disc.parameters(), lr=lr)
+
+    dataloader = data_loader(path,batch_size)
+
+    train_gan(
+        'dcgan',
+        gen,
+        disc,
+        optimizer_gen,
+        optimizer_disc,
+        dataloader,
+        criterion,
+        display_step,
+        z_dim,
+        n_epochs,
+        viz,
+        device)
+
+
+if __name__ == '__main__':
+    training_gan(viz=True)
