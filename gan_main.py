@@ -34,8 +34,6 @@ def training_gan(
         display_step,
         z_dim,
         n_epochs,
-        batch_size,
-        lr,
         device)
 
 

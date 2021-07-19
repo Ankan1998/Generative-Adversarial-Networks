@@ -18,8 +18,6 @@ def train_gan(
     display_step=50,
     z_dim = 64,
     n_epochs=50,
-    n_batch=128,
-    lr=0.0001,
     device='cpu'):
     
     cur_step = 0
