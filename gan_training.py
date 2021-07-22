@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from tqdm import tqdm
-from gan_loss import *
+from loss.gan_loss import *
 from visualize import visualize_tensor_images
 
 
