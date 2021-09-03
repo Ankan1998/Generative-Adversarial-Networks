@@ -34,3 +34,7 @@ class Generator(nn.Module):
     def forward(self, noise):
         x = self.unsqueeze_noise(noise)
         return self.gen(x)
+
+if __name__=="__main__":
+    gen = Generator()
+    print(gen)
