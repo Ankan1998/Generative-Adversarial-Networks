@@ -25,4 +25,5 @@ class Discriminator(nn.Module):
 
     def forward(self, image):
         disc_pred = self.disc(image)
-        return disc_pred.view(len(disc_pred), -1)
+        temp = disc_pred.view(len(disc_pred), -1)
+        return temp
